@@ -1,8 +1,6 @@
 package com.url.shortner.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class IDConverter {
     private static final IDConverter instance=new IDConverter();
@@ -13,7 +11,7 @@ public class IDConverter {
 
     private static HashMap<Character,Integer> charToIndexMap;
 
-    private List<Character> indexToCharTable;
+    private static List<Character> indexToCharTable;
 
 
     private void initialize() {
@@ -40,5 +38,42 @@ public class IDConverter {
             indexToCharTable.add(c);
         }
 
+    }
+
+    public static String createUniqueId(Long id){
+        List<Integer> ids=convertBase10ToBase62(id);
+        StringBuilder sb=new StringBuilder();
+        for(int ele:ids){
+            sb.append(indexToCharTable.get(ele));
+        }
+        return sb.toString();
+    }
+
+    private static List<Integer> convertBase10ToBase62(Long id) {
+        List<Integer> base62Ids=new LinkedList<>();
+        while (id>0){
+            int remainder=(int)(id%62);
+            ((LinkedList<Integer>) base62Ids).addFirst(remainder);
+            id/=62;
+
+        }
+        return base62Ids;
+    }
+
+    private static Long getDictionaryKeyFromUniqueId(String uniqueId){
+        List<Character> ids=new ArrayList<>();
+        for(int i=0;i<uniqueId.length();i++){
+            ids.add(uniqueId.charAt(i));
+        }
+        return convertBase62ToBase10(ids);
+    }
+
+    private static Long convertBase62ToBase10(List<Character> ids) {
+        long id=0;
+        for(int i=0,exp=ids.size()-1;i<ids.size();i++,exp--){
+            int base10=charToIndexMap.get(ids.get(i));
+            id+= (long) (base10* Math.pow(62.0,exp));
+        }
+        return id;
     }
 }
