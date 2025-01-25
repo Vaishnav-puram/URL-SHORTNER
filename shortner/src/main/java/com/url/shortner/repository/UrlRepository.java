@@ -11,7 +11,7 @@ public class UrlRepository {
     private final String idKey;
     private final String urlKey;
 
-    public UrlRepository(Jedis jedis, String idKey, String urlKey) {
+    public UrlRepository(Jedis jedis) {
         this.jedis = new Jedis();
         this.idKey = "id";
         this.urlKey = "url:";
