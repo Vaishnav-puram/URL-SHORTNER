@@ -3,7 +3,7 @@ package com.url.shortner.util;
 import java.util.*;
 
 public class IDConverter {
-    private static final IDConverter instance=new IDConverter();
+    public static final IDConverter instance=new IDConverter();
 
     private  IDConverter(){
         initialize();
@@ -40,7 +40,7 @@ public class IDConverter {
 
     }
 
-    public static String createUniqueId(Long id){
+    public String createUniqueId(Long id){
         List<Integer> ids=convertBase10ToBase62(id);
         StringBuilder sb=new StringBuilder();
         for(int ele:ids){
@@ -60,7 +60,7 @@ public class IDConverter {
         return base62Ids;
     }
 
-    private static Long getDictionaryKeyFromUniqueId(String uniqueId){
+    public Long getDictionaryKeyFromUniqueId(String uniqueId){
         List<Character> ids=new ArrayList<>();
         for(int i=0;i<uniqueId.length();i++){
             ids.add(uniqueId.charAt(i));
