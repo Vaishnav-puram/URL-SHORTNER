@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URISyntaxException;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class UrlShortnerController {
     private UrlService urlService;
 
     @PostMapping("/shortenUrl")
-    public String shortenUrl(@RequestBody ShortenRequest shortenRequest, HttpServletRequest request){
+    public String shortenUrl(@RequestBody ShortenRequest shortenRequest, HttpServletRequest request) throws SocketException {
         String shortneUrl=urlService.shortenUrl(request.getRequestURL().toString(),shortenRequest.getUrl());
         return shortneUrl;
     }

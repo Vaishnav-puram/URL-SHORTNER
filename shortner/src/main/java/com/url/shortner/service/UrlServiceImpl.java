@@ -2,9 +2,12 @@ package com.url.shortner.service;
 
 import com.url.shortner.repository.UrlRepository;
 import com.url.shortner.util.IDConverter;
+import com.url.shortner.util.SnowFlakeIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.net.SocketException;
 
 @Slf4j
 @Service
@@ -14,8 +17,9 @@ public class UrlServiceImpl implements UrlService{
     private UrlRepository urlRepository;
 
     @Override
-    public String shortenUrl(String localUrl, String longUrl) {
-        long id=urlRepository.incrementId();
+    public String shortenUrl(String localUrl, String longUrl) throws SocketException {
+        //long id=urlRepository.incrementId();
+        long id= SnowFlakeIdGenerator.uniqueIdGenerator();
         String uniqueId=IDConverter.instance.createUniqueId(id);// base62 id
         log.info("unique id : "+uniqueId);
         urlRepository.saveUrl("url:"+id,longUrl); //saving long url with key url:{base62Id}
@@ -29,6 +33,9 @@ public class UrlServiceImpl implements UrlService{
         String[] addressComponents=localUrl.split("/");
         StringBuilder sb=new StringBuilder();
         for (int i=0;i<addressComponents.length-1;i++){
+            if(i==addressComponents.length-2){
+                sb.append("/");
+            }
             sb.append(addressComponents[i]);
         }
         sb.append("/");
