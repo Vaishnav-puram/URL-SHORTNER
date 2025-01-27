@@ -60,7 +60,7 @@ public class SnowFlakeIdGenerator {
 
         long id=0;
         // for filling 41 bits timestamp bits
-        id=timestamp()<<(NODEIDBITS+COUNTERBITS);
+        id=currentTimestamp<<(NODEIDBITS+COUNTERBITS);
         // for filling 10 bit machine ID bits
         id|=(getHardwareAddress()<<(COUNTERBITS));
         // for filling 12 bit counter bits
